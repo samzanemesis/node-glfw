@@ -765,7 +765,7 @@ NAN_METHOD(_CreateWindow) { NAN_HS;
 }
 
 
-NAN_METHOD(PlatformWindow) { NAN_HS; THIS_WINDOW;
+NAN_METHOD(PlatformWindow) { THIS_WINDOW;
 	
 #ifdef _WIN32
 	RET_VALUE(JS_NUM((uint64_t) glfwGetWin32Window(window)));
@@ -778,7 +778,7 @@ NAN_METHOD(PlatformWindow) { NAN_HS; THIS_WINDOW;
 }
 
 
-NAN_METHOD(PlatformContext) { NAN_HS; THIS_WINDOW;
+NAN_METHOD(PlatformContext) { THIS_WINDOW;
 	
 #ifdef _WIN32
 	RET_VALUE(JS_NUM((uint64_t) glfwGetWGLContext(window)));
@@ -878,14 +878,14 @@ NAN_METHOD(BlitFrameBuffer) { NAN_HS;
 }
 
 
-NAN_METHOD(DestroyWindow) { NAN_HS; THIS_WINDOW;
+NAN_METHOD(DestroyWindow) { THIS_WINDOW;
 	
 	glfwDestroyWindow(window);
 	
 }
 
 
-NAN_METHOD(SetWindowTitle) { NAN_HS; THIS_WINDOW;
+NAN_METHOD(SetWindowTitle) { THIS_WINDOW;
 	
 	REQ_UTF8_ARG(1, str);
 	
@@ -894,7 +894,45 @@ NAN_METHOD(SetWindowTitle) { NAN_HS; THIS_WINDOW;
 }
 
 
-NAN_METHOD(GetWindowSize) { NAN_HS; THIS_WINDOW;
+NAN_METHOD(SetWindowIcon) { THIS_WINDOW;
+	
+	REQ_OBJ_ARG(1, icon);
+	
+	GLFWimage image;
+	image.width = icon->Get(JS_STR("width"))->Int32Value();
+	image.height = icon->Get(JS_STR("height"))->Int32Value();
+	
+	if (icon->Has(JS_STR("raw"))) {
+		
+		Local<Value> raw = icon->Get(JS_STR("raw"));
+		
+		if ( ! raw.IsExternal() ) {
+			return;
+		}
+		
+		
+	} else if (icon->Has(JS_STR("data"))) {
+		
+		Local<Object> objData = Local<Object>::Cast(info[I]);
+		if( ! objData->IsArrayBufferView() ) {
+			return;
+		}
+		Local<Uint8Array> data = Local<Uint8Array>::Cast(objData);
+		
+		
+		
+	}
+	
+	image.pixels = 
+	
+	NAME.setX(static_cast<float>(OBJ->Get(JS_STR("x"))->NumberValue()));
+	
+	glfwSetWindowIcon(window, 1, &image);
+	
+}
+
+
+NAN_METHOD(GetWindowSize) { THIS_WINDOW;
 	
 	int w,h;
 	glfwGetWindowSize(window, &w, &h);
@@ -908,7 +946,7 @@ NAN_METHOD(GetWindowSize) { NAN_HS; THIS_WINDOW;
 }
 
 
-NAN_METHOD(SetWindowSize) { NAN_HS; THIS_WINDOW;
+NAN_METHOD(SetWindowSize) { THIS_WINDOW;
 	
 	REQ_UINT32_ARG(1, w);
 	REQ_UINT32_ARG(2, h);
@@ -918,7 +956,7 @@ NAN_METHOD(SetWindowSize) { NAN_HS; THIS_WINDOW;
 }
 
 
-NAN_METHOD(SetWindowPos) { NAN_HS; THIS_WINDOW;
+NAN_METHOD(SetWindowPos) { THIS_WINDOW;
 	
 	REQ_UINT32_ARG(1, x);
 	REQ_UINT32_ARG(2, y);
@@ -928,7 +966,7 @@ NAN_METHOD(SetWindowPos) { NAN_HS; THIS_WINDOW;
 }
 
 
-NAN_METHOD(GetWindowPos) { NAN_HS; THIS_WINDOW;
+NAN_METHOD(GetWindowPos) { THIS_WINDOW;
 	
 	int xpos, ypos;
 	glfwGetWindowPos(window, &xpos, &ypos);
@@ -942,7 +980,7 @@ NAN_METHOD(GetWindowPos) { NAN_HS; THIS_WINDOW;
 }
 
 
-NAN_METHOD(GetFramebufferSize) { NAN_HS; THIS_WINDOW;
+NAN_METHOD(GetFramebufferSize) { THIS_WINDOW;
 	
 	int width, height;
 	glfwGetFramebufferSize(window, &width, &height);
@@ -956,42 +994,42 @@ NAN_METHOD(GetFramebufferSize) { NAN_HS; THIS_WINDOW;
 }
 
 
-NAN_METHOD(IconifyWindow) { NAN_HS; THIS_WINDOW;
+NAN_METHOD(IconifyWindow) { THIS_WINDOW;
 	
 	glfwIconifyWindow(window);
 	
 }
 
 
-NAN_METHOD(RestoreWindow) { NAN_HS; THIS_WINDOW;
+NAN_METHOD(RestoreWindow) { THIS_WINDOW;
 	
 	glfwRestoreWindow(window);
 	
 }
 
 
-NAN_METHOD(HideWindow) { NAN_HS; THIS_WINDOW;
+NAN_METHOD(HideWindow) { THIS_WINDOW;
 	
 	glfwHideWindow(window);
 	
 }
 
 
-NAN_METHOD(ShowWindow) { NAN_HS; THIS_WINDOW;
+NAN_METHOD(ShowWindow) { THIS_WINDOW;
 	
 	glfwShowWindow(window);
 	
 }
 
 
-NAN_METHOD(WindowShouldClose) { NAN_HS; THIS_WINDOW;
+NAN_METHOD(WindowShouldClose) { THIS_WINDOW;
 	
 	RET_VALUE(JS_INT(glfwWindowShouldClose(window)));
 	
 }
 
 
-NAN_METHOD(SetWindowShouldClose) { NAN_HS; THIS_WINDOW;
+NAN_METHOD(SetWindowShouldClose) { THIS_WINDOW;
 	
 	REQ_UINT32_ARG(1, value);
 	
@@ -1000,7 +1038,7 @@ NAN_METHOD(SetWindowShouldClose) { NAN_HS; THIS_WINDOW;
 }
 
 
-NAN_METHOD(GetWindowAttrib) { NAN_HS; THIS_WINDOW;
+NAN_METHOD(GetWindowAttrib) { THIS_WINDOW;
 	
 	REQ_UINT32_ARG(1, attrib);
 	
@@ -1009,7 +1047,7 @@ NAN_METHOD(GetWindowAttrib) { NAN_HS; THIS_WINDOW;
 }
 
 
-NAN_METHOD(SetInputMode) { NAN_HS; THIS_WINDOW;
+NAN_METHOD(SetInputMode) { THIS_WINDOW;
 	
 	REQ_INT32_ARG(1, mode);
 	REQ_INT32_ARG(2, value);
@@ -1034,7 +1072,7 @@ NAN_METHOD(WaitEvents) { NAN_HS;
 
 
 /* Input handling */
-NAN_METHOD(GetKey) { NAN_HS; THIS_WINDOW;
+NAN_METHOD(GetKey) { THIS_WINDOW;
 	
 	REQ_UINT32_ARG(1, key);
 	
@@ -1043,7 +1081,7 @@ NAN_METHOD(GetKey) { NAN_HS; THIS_WINDOW;
 }
 
 
-NAN_METHOD(GetMouseButton) { NAN_HS; THIS_WINDOW;
+NAN_METHOD(GetMouseButton) { THIS_WINDOW;
 	
 	REQ_UINT32_ARG(1, button);
 	
@@ -1052,7 +1090,7 @@ NAN_METHOD(GetMouseButton) { NAN_HS; THIS_WINDOW;
 }
 
 
-NAN_METHOD(GetCursorPos) { NAN_HS; THIS_WINDOW;
+NAN_METHOD(GetCursorPos) { THIS_WINDOW;
 	
 	double x,y;
 	glfwGetCursorPos(window, &x, &y);
@@ -1066,7 +1104,7 @@ NAN_METHOD(GetCursorPos) { NAN_HS; THIS_WINDOW;
 }
 
 
-NAN_METHOD(SetCursorPos) { NAN_HS; THIS_WINDOW;
+NAN_METHOD(SetCursorPos) { THIS_WINDOW;
 	
 	REQ_INT32_ARG(1, x);
 	REQ_INT32_ARG(2, y);
@@ -1077,7 +1115,7 @@ NAN_METHOD(SetCursorPos) { NAN_HS; THIS_WINDOW;
 
 
 /* @Module Context handling */
-NAN_METHOD(MakeContextCurrent) { NAN_HS; THIS_WINDOW;
+NAN_METHOD(MakeContextCurrent) { THIS_WINDOW;
 	
 	glfwMakeContextCurrent(window);
 	
@@ -1093,7 +1131,7 @@ NAN_METHOD(GetCurrentContext) { NAN_HS;
 }
 
 
-NAN_METHOD(SwapBuffers) { NAN_HS; THIS_WINDOW;
+NAN_METHOD(SwapBuffers) { THIS_WINDOW;
 	
 	glfwSwapBuffers(window);
 	
