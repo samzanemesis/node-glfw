@@ -44,21 +44,21 @@ struct WinState {
 std::map<GLFWwindow *, WinState> states;
 
 
-NAN_METHOD(Init) { NAN_HS;
+NAN_METHOD(Init) {
 	
 	RET_VALUE(JS_BOOL(glfwInit() == 1));
 	
 }
 
 
-NAN_METHOD(Terminate) { NAN_HS;
+NAN_METHOD(Terminate) {
 	
 	glfwTerminate();
 	
 }
 
 
-NAN_METHOD(GetVersion) { NAN_HS;
+NAN_METHOD(GetVersion) {
 	
 	int major, minor, rev;
 	glfwGetVersion(&major, &minor, &rev);
@@ -73,7 +73,7 @@ NAN_METHOD(GetVersion) { NAN_HS;
 }
 
 
-NAN_METHOD(GetVersionString) { NAN_HS;
+NAN_METHOD(GetVersionString) {
 	
 	const char *ver = glfwGetVersionString();
 	RET_VALUE(JS_STR(ver));
@@ -81,14 +81,14 @@ NAN_METHOD(GetVersionString) { NAN_HS;
 }
 
 
-NAN_METHOD(GetTime) { NAN_HS;
+NAN_METHOD(GetTime) {
 	
 	RET_VALUE(JS_NUM(glfwGetTime()));
 	
 }
 
 
-NAN_METHOD(SetTime) { NAN_HS;
+NAN_METHOD(SetTime) {
 	
 	REQ_DOUBLE_ARG(0, time);
 	
@@ -99,7 +99,7 @@ NAN_METHOD(SetTime) { NAN_HS;
 
 /* TODO: Monitor configuration change callback */
 
-NAN_METHOD(GetMonitors) { NAN_HS;
+NAN_METHOD(GetMonitors) {
 	
 	int monitor_count, mode_count, xpos, ypos, width, height;
 	
@@ -517,7 +517,7 @@ void scrollCB(GLFWwindow *window, double xoffset, double yoffset) { NAN_HS;
 }
 
 
-NAN_METHOD(testJoystick) { NAN_HS;
+NAN_METHOD(testJoystick) {
 	
 	REQ_UINT32_ARG(0, width);
 	REQ_UINT32_ARG(1, height);
@@ -554,7 +554,7 @@ NAN_METHOD(testJoystick) { NAN_HS;
 }
 
 
-NAN_METHOD(testScene) { NAN_HS;
+NAN_METHOD(testScene) {
 	
 	REQ_UINT32_ARG(0, width);
 	REQ_UINT32_ARG(1, height);
@@ -584,7 +584,7 @@ NAN_METHOD(testScene) { NAN_HS;
 }
 
 
-NAN_METHOD(WindowHint) { NAN_HS;
+NAN_METHOD(WindowHint) {
 	
 	REQ_UINT32_ARG(0, target);
 	REQ_UINT32_ARG(1, hint);
@@ -594,14 +594,14 @@ NAN_METHOD(WindowHint) { NAN_HS;
 }
 
 
-NAN_METHOD(DefaultWindowHints) { NAN_HS;
+NAN_METHOD(DefaultWindowHints) {
 	
 	glfwDefaultWindowHints();
 	
 }
 
 
-NAN_METHOD(JoystickPresent) { NAN_HS;
+NAN_METHOD(JoystickPresent) {
 	
 	REQ_UINT32_ARG(0, joy);
 	
@@ -638,7 +638,7 @@ std::string buttonToString(unsigned char c) {
 }
 
 
-NAN_METHOD(GetJoystickAxes) { NAN_HS;
+NAN_METHOD(GetJoystickAxes) {
 	
 	REQ_UINT32_ARG(0, joy);
 	
@@ -656,7 +656,7 @@ NAN_METHOD(GetJoystickAxes) { NAN_HS;
 }
 
 
-NAN_METHOD(GetJoystickButtons) { NAN_HS;
+NAN_METHOD(GetJoystickButtons) {
 	
 	REQ_UINT32_ARG(0, joy);
 	
@@ -674,7 +674,7 @@ NAN_METHOD(GetJoystickButtons) { NAN_HS;
 }
 
 
-NAN_METHOD(GetJoystickName) { NAN_HS;
+NAN_METHOD(GetJoystickName) {
 	
 	REQ_UINT32_ARG(0, joy);
 	
@@ -686,7 +686,7 @@ NAN_METHOD(GetJoystickName) { NAN_HS;
 
 
 // Name altered due to windows.h collision
-NAN_METHOD(_CreateWindow) { NAN_HS;
+NAN_METHOD(_CreateWindow) {
 	
 	REQ_UINT32_ARG(0, width);
 	REQ_UINT32_ARG(1, height);
@@ -791,7 +791,7 @@ NAN_METHOD(PlatformContext) { THIS_WINDOW;
 }
 
 
-NAN_METHOD(GetRenderTarget) { NAN_HS;
+NAN_METHOD(GetRenderTarget) {
 	
 	REQ_UINT32_ARG(0, width);
 	REQ_UINT32_ARG(1, height);
@@ -850,7 +850,7 @@ NAN_METHOD(GetRenderTarget) { NAN_HS;
 }
 
 
-NAN_METHOD(BindFrameBuffer) { NAN_HS;
+NAN_METHOD(BindFrameBuffer) {
 	
 	REQ_UINT32_ARG(0, fbo);
 	
@@ -859,7 +859,7 @@ NAN_METHOD(BindFrameBuffer) { NAN_HS;
 }
 
 
-NAN_METHOD(BlitFrameBuffer) { NAN_HS;
+NAN_METHOD(BlitFrameBuffer) {
 	
 	REQ_UINT32_ARG(0, fbo1);
 	REQ_UINT32_ARG(1, fbo2);
@@ -1057,14 +1057,14 @@ NAN_METHOD(SetInputMode) { THIS_WINDOW;
 }
 
 
-NAN_METHOD(PollEvents) { NAN_HS;
+NAN_METHOD(PollEvents) {
 	
 	glfwPollEvents();
 	
 }
 
 
-NAN_METHOD(WaitEvents) { NAN_HS;
+NAN_METHOD(WaitEvents) {
 	
 	glfwWaitEvents();
 	
@@ -1122,7 +1122,7 @@ NAN_METHOD(MakeContextCurrent) { THIS_WINDOW;
 }
 
 
-NAN_METHOD(GetCurrentContext) { NAN_HS;
+NAN_METHOD(GetCurrentContext) {
 	
 	GLFWwindow *window = glfwGetCurrentContext();
 	
@@ -1138,7 +1138,7 @@ NAN_METHOD(SwapBuffers) { THIS_WINDOW;
 }
 
 
-NAN_METHOD(SwapInterval) { NAN_HS;
+NAN_METHOD(SwapInterval) {
 	
 	REQ_INT32_ARG(0, interval);
 	
@@ -1148,7 +1148,7 @@ NAN_METHOD(SwapInterval) { NAN_HS;
 
 
 /* Extension support */
-NAN_METHOD(ExtensionSupported) { NAN_HS;
+NAN_METHOD(ExtensionSupported) {
 	
 	REQ_UTF8_ARG(0, str);
 	
